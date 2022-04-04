@@ -1,25 +1,32 @@
-import logo from './logo.svg';
+import React, {Component} from "react";
+import axios from "axios";
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      userArray: []
+    }
+  }
+
+  componentDidMount() {
+    axios.get("https://randomuser.me/api?results=25")
+      .then( res => {
+          const userArray = res.data.results
+          console.log(res)
+          this.setState({ userArray })
+      })
+  }
+
+  render() {
+    <ol>{this.state.userArray.map((user, index) => {
+      return (
+        <UserCard key={index} name={user.name} location={user.location} gender={user.gender} />
+      )
+    })}</ol>
+  }
 }
 
 export default App;
